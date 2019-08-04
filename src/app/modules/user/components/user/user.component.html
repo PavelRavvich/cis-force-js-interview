@@ -1,0 +1,12 @@
+<div *ngIf="!isLoading" class="card">
+  <img src="{{user.avatar}}" alt="{{user.first_name}}">
+
+  <h1>{{user.first_name + ' ' + user.last_name}}</h1>
+
+  <p class="email">{{user.email}}</p>
+
+  <app-button
+    label="Back to list"
+    routerLink=".."
+  ></app-button>
+</div>
