@@ -1,19 +1,27 @@
 import {
+  OnInit,
   Component,
   OnDestroy,
-  OnInit
 } from '@angular/core';
 import {
-  ActivatedRoute,
+  Router,
   NavigationEnd,
-  Router
+  ActivatedRoute,
 } from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import {
+  Observable,
+  Subscription
+} from 'rxjs';
+import {
+  map,
+  tap,
+  filter,
+} from 'rxjs/operators';
 
 
 import { IUser } from '../../interfaces/user.interface';
 import { ApiService } from '../../services/api.service';
+import { IPaginatorConfig } from 'app/shared/interfaces/paginator-config.interface';
 
 @Component({
   selector: 'app-user-list',
@@ -41,14 +49,37 @@ export class UserListComponent
 
   public isBaseRoute: boolean;
 
-  public ngOnInit() {
-    this.users = this.api.getUsers()
+  public paginatorConfig: IPaginatorConfig = {
+    page: 1,
+    dataLength: 0,
+    perPage: 10,
+    totalPages: 0,
+    total: 0,
+  };
+
+  public ngOnInit(): void {
+    this.loadPage();
+  }
+
+  public loadPage(): void {
+    this.users = this.api
+      .getUsers({
+        page: this.paginatorConfig.page,
+        perPage: this.paginatorConfig.perPage,
+      })
       .pipe(
+        tap(data => {
+          this.paginatorConfig.page = data.page;
+          this.paginatorConfig.total = data.total;
+          this.paginatorConfig.perPage = data.per_page;
+          this.paginatorConfig.totalPages = data.total_pages;
+          this.paginatorConfig.dataLength = data.data.length;
+        }),
         map(data => data.data)
       );
   }
 
-  public toDetails(id: string): void {
+  public toDetails(id: Number): void {
     this.router.navigate([ `users/${id}` ]);
   }
 
@@ -57,6 +88,11 @@ export class UserListComponent
       this.router.createUrlTree([ '.' ], { relativeTo: this.route }),
       true
     );
+  }
+
+  public pageChange(config: IPaginatorConfig): void {
+    this.paginatorConfig = config;
+    this.loadPage();
   }
 
   public ngOnDestroy(): void {

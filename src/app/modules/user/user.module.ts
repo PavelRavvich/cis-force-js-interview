@@ -10,6 +10,7 @@ import { UserComponent } from './components/user/user.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 
 import { ApiService } from './services/api.service';
+import { UserService } from './services/user.service';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { ApiService } from './services/api.service';
   ],
   providers: [
     ApiService,
+    UserService,
   ],
 })
 export class UserModule { }

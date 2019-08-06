@@ -1,0 +1,19 @@
+<div class="paginator">
+  <div
+    class="drive pointer"
+    (click)="changePage(config.page - 1)"
+  ><- Back</div>
+
+  <div class="drive">
+    Page: {{config.page}} of {{config.totalPages}}
+  </div>
+
+  <div class="drive">
+    Items: {{config.dataLength}} of {{config.total}}
+  </div>
+
+  <div
+    class="drive pointer"
+    (click)="changePage(config.page + 1)"
+  >Next -></div>
+</div>

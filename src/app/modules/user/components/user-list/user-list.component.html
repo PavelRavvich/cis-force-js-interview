@@ -9,6 +9,7 @@
     </tr>
     </thead>
     <tbody>
+
     <tr *ngFor="let item of users | async; let i = index"
         (click)="toDetails(item.id)">
 
@@ -19,6 +20,11 @@
     </tr>
     </tbody>
   </table>
+
+  <app-paginator
+    [config]="paginatorConfig"
+    (pageChange)="pageChange($event)"
+  ></app-paginator>
 </div>
 
 <router-outlet></router-outlet>

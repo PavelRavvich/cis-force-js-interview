@@ -4,8 +4,8 @@ import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 
-import { ApiService } from '../../services/api.service';
 import { IUser } from '../../interfaces/user.interface';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -18,7 +18,7 @@ export class UserComponent
   constructor(
     private readonly route: Router,
     private readonly router: ActivatedRoute,
-    private readonly api: ApiService,
+    private readonly userService: UserService,
   ) { }
 
   public isLoading = true;
@@ -32,14 +32,18 @@ export class UserComponent
   }
 
   private loadUser(): void {
-    this.loadSubscription = this.api
-      .getUser(this.router.snapshot.params.id)
-      .pipe(finalize(() => { this.isLoading = false; }))
-      .subscribe(data => this.user = data.data);
+    this.loadSubscription = this.userService
+      .getUser(+this.router.snapshot.params.id)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe(user => {
+        this.userService
+          .caching(user.id, user);
+
+        this.user = user;
+      });
   }
 
   public ngOnDestroy(): void {
     this.loadSubscription.unsubscribe();
   }
-
 }
