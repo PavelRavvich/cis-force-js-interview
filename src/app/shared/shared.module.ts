@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 
 import {
   ButtonComponent,
-  PaginatorComponent
+  PaginatorComponent,
+  DataTableComponent,
 } from './components';
 
 @NgModule({
   declarations: [
     ButtonComponent,
     PaginatorComponent,
+    DataTableComponent,
   ],
   imports: [
     CommonModule
@@ -17,6 +19,7 @@ import {
   exports: [
     ButtonComponent,
     PaginatorComponent,
+    DataTableComponent,
   ]
 })
 export class SharedModule { }

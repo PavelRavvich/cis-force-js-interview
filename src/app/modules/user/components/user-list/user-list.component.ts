@@ -25,8 +25,7 @@ import { IPaginatorConfig } from 'app/shared/interfaces/paginator-config.interfa
 
 @Component({
   selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+  templateUrl: './user-list.component.html'
 })
 export class UserListComponent
   implements OnInit, OnDestroy {
@@ -48,6 +47,18 @@ export class UserListComponent
   public users: Observable<IUser[]>;
 
   public isBaseRoute: boolean;
+
+  public readonly columns = [
+    'First name',
+    'Last name',
+    'Email'
+  ];
+
+  public readonly keys = [
+    'first_name',
+    'last_name',
+    'email',
+  ];
 
   public paginatorConfig: IPaginatorConfig = {
     page: 1,
@@ -79,7 +90,7 @@ export class UserListComponent
       );
   }
 
-  public toDetails(id: Number): void {
+  public view(id: Number): void {
     this.router.navigate([ `users/${id}` ]);
   }
 
